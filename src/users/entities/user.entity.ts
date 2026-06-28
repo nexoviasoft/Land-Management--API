@@ -22,8 +22,8 @@ export class User {
   @Column({ unique: true })
   Nid: string;
 
-  @Column({ nullable: true })
-  picture: string;
+  @Column({ type: 'varchar', nullable: true })
+  picture: string | null;
 
   @Column()
   password: string;
@@ -38,14 +38,14 @@ export class User {
   @Column({ default: false })
   isBanned: boolean;
 
-  @Column({ nullable: true })
-  refreshToken: string;
+  @Column({ type: 'varchar', nullable: true })
+  refreshToken: string | null;
 
-  @Column({ nullable: true })
-  resetPasswordToken: string;
+  @Column({ type: 'varchar', nullable: true })
+  resetPasswordToken: string | null;
 
   @Column({ type: 'timestamp', nullable: true })
-  resetPasswordExpires: Date;
+  resetPasswordExpires: Date | null;
 
   @CreateDateColumn()
   createdAt: Date;

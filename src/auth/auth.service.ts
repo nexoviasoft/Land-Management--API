@@ -135,7 +135,7 @@ export class AuthService {
     const hashedToken = crypto.createHash('sha256').update(resetPasswordDto.token).digest('hex');
     const user = await this.usersService.findByResetToken(hashedToken);
 
-    if (!user || user.resetPasswordExpires < new Date()) {
+    if (!user || !user.resetPasswordExpires || user.resetPasswordExpires < new Date()) {
       throw new BadRequestException('Invalid or expired password reset token');
     }
 
