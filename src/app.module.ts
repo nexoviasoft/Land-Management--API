@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { LanddocModule } from './landdoc/landdoc.module';
+import { OverviewModule } from './overview/overview.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { LanddocModule } from './landdoc/landdoc.module';
     UsersModule,
     AuthModule,
     LanddocModule,
+    OverviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -8,5 +8,6 @@ import { LandDoc } from './entities/landdoc.entity';
   imports: [TypeOrmModule.forFeature([LandDoc])],
   controllers: [LanddocController],
   providers: [LanddocService],
+  exports: [LanddocService],
 })
 export class LanddocModule {}

@@ -2,13 +2,13 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeor
 
 @Entity('land_docs')
 export class LandDoc {
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryGeneratedColumn()
     id: string;
 
     @Column({ name: 'user_id' })
     userId: string;
 
-    @Column({ type: 'jsonb' })
+    @Column({ type: 'jsonb', nullable: true })
     location: {
         division: string;
         district: string;
