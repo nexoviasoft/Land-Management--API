@@ -7,6 +7,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { LanddocModule } from './landdoc/landdoc.module';
 import { OverviewModule } from './overview/overview.module';
+import { LoginSlidesModule } from './login-slides/login-slides.module';
+import { PromotionsModule } from './promotions/promotions.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { OverviewModule } from './overview/overview.module';
     AuthModule,
     LanddocModule,
     OverviewModule,
+    LoginSlidesModule,
+    PromotionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
