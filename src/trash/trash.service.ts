@@ -59,6 +59,24 @@ export class TrashService {
     return this.landDocRepository.recover(doc);
   }
 
+  async permanentlyDeleteUser(id: string): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id }, withDeleted: true });
+    if (!user || !user.deletedAt) throw new NotFoundException('Deleted user not found');
+    await this.userRepository.remove(user);
+  }
+
+  async permanentlyDeleteNotice(id: string): Promise<void> {
+    const notice = await this.noticeRepository.findOne({ where: { id }, withDeleted: true });
+    if (!notice || !notice.deletedAt) throw new NotFoundException('Deleted notice not found');
+    await this.noticeRepository.remove(notice);
+  }
+
+  async permanentlyDeleteLandDoc(id: string): Promise<void> {
+    const doc = await this.landDocRepository.findOne({ where: { id }, withDeleted: true });
+    if (!doc || !doc.deletedAt) throw new NotFoundException('Deleted land document not found');
+    await this.landDocRepository.remove(doc);
+  }
+
   // Run daily at midnight to permanently delete items older than 30 days
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async cleanupOldTrash() {

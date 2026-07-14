@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, UseGuards, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Param, Post, Delete, UseGuards, HttpStatus } from '@nestjs/common';
 import { TrashService } from './trash.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -68,6 +68,32 @@ export class TrashController {
       statusCode: HttpStatus.OK,
       message: 'Land document recovered successfully',
       data,
+    };
+  }
+  @Delete('users/:id')
+  async permanentlyDeleteUser(@Param('id') id: string) {
+    await this.trashService.permanentlyDeleteUser(id);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User permanently deleted',
+    };
+  }
+
+  @Delete('notices/:id')
+  async permanentlyDeleteNotice(@Param('id') id: string) {
+    await this.trashService.permanentlyDeleteNotice(id);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Notice permanently deleted',
+    };
+  }
+
+  @Delete('landdocs/:id')
+  async permanentlyDeleteLandDoc(@Param('id') id: string) {
+    await this.trashService.permanentlyDeleteLandDoc(id);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Land document permanently deleted',
     };
   }
 }
