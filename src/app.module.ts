@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,6 +10,7 @@ import { LanddocModule } from './landdoc/landdoc.module';
 import { OverviewModule } from './overview/overview.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { NoticeModule } from './notice/notice.module';
+import { TrashModule } from './trash/trash.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { NoticeModule } from './notice/notice.module';
     OverviewModule,
     NotificationsModule,
     NoticeModule,
+    TrashModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

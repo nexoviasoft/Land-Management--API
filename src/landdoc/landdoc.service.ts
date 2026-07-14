@@ -107,7 +107,7 @@ export class LanddocService {
 
   async remove(id: string, user: UserPayload): Promise<void> {
     const landDoc = await this.findOne(id, user);
-    await this.landDocRepository.remove(landDoc);
+    await this.landDocRepository.softRemove(landDoc);
   }
 
   async approve(id: string, user: UserPayload): Promise<LandDoc> {

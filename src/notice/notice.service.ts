@@ -44,4 +44,11 @@ export class NoticeService {
       where: { id }
     });
   }
+
+  async remove(id: string): Promise<void> {
+    const notice = await this.getNoticeById(id);
+    if (notice) {
+      await this.noticeRepository.softRemove(notice);
+    }
+  }
 }

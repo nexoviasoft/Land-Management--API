@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn } from 'typeorm';
 
 export enum LandDocStatus {
     PENDING = 'pending',
@@ -46,4 +46,7 @@ export class LandDoc {
         default: LandDocStatus.PENDING
     })
     status: LandDocStatus;
+
+    @DeleteDateColumn({ name: 'deleted_at' })
+    deletedAt: Date;
 }
