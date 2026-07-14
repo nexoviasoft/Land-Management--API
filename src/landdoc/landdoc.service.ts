@@ -126,4 +126,21 @@ export class LanddocService {
 
     return savedDoc;
   }
+
+  async reject(id: string, user: UserPayload): Promise<LandDoc> {
+    if (user.role !== UserRole.ADMIN) {
+      throw new ForbiddenException('Only admins can reject land documents');
+    }
+
+    const landDoc = await this.findOne(id, user);
+    landDoc.status = LandDocStatus.REJECTED;
+    const savedDoc = await this.landDocRepository.save(landDoc);
+
+    await this.notificationsService.createForUser(
+      savedDoc.userId,
+      `Your land document for ${savedDoc.location?.mouza || 'unknown area'} has been rejected.`
+    );
+
+    return savedDoc;
+  }
 }

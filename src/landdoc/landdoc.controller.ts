@@ -111,4 +111,15 @@ export class LanddocController {
       data,
     };
   }
+
+  @Patch(':id/reject')
+  @HttpCode(HttpStatus.OK)
+  async reject(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
+    const data = await this.landdocService.reject(id, req.user);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Land document rejected successfully',
+      data,
+    };
+  }
 }
