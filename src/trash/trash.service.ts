@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Not, IsNull } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { Notice } from '../notice/entities/notice.entity';
 import { LandDoc } from '../landdoc/entities/landdoc.entity';
@@ -20,23 +20,25 @@ export class TrashService {
   async getDeletedUsers(): Promise<User[]> {
     return this.userRepository.find({
       withDeleted: true,
-      where: { deletedAt: Object.assign({}, { $ne: null }) } as any, // TypeORM approach for IS NOT NULL
+      where: { deletedAt: Not(IsNull()) },
       order: { deletedAt: 'DESC' }
-    }).then(users => users.filter(u => u.deletedAt !== null)); // Ensure only deleted ones
+    });
   }
 
   async getDeletedNotices(): Promise<Notice[]> {
     return this.noticeRepository.find({
       withDeleted: true,
+      where: { deletedAt: Not(IsNull()) },
       order: { deletedAt: 'DESC' }
-    }).then(notices => notices.filter(n => n.deletedAt !== null));
+    });
   }
 
   async getDeletedLandDocs(): Promise<LandDoc[]> {
     return this.landDocRepository.find({
       withDeleted: true,
+      where: { deletedAt: Not(IsNull()) },
       order: { deletedAt: 'DESC' }
-    }).then(docs => docs.filter(d => d.deletedAt !== null));
+    });
   }
 
   async recoverUser(id: string): Promise<User> {

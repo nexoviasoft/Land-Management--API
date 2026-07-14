@@ -52,6 +52,10 @@ export class OverviewService {
       where: { userId }
     });
 
+    const pendingApprovals = await this.landDocRepository.count({
+      where: { userId, status: 'pending' as any }
+    });
+
     const recentDocs = await this.landDocRepository.find({
       where: { userId },
       order: { uploadedAt: 'DESC' },
@@ -64,6 +68,7 @@ export class OverviewService {
 
     return {
       totalLandDocs,
+      pendingApprovals,
       recentDocs,
       recentActivity
     };

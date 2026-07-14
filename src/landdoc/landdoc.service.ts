@@ -92,8 +92,8 @@ export class LanddocService {
       throw new NotFoundException(`LandDoc with ID ${id} not found`);
     }
 
-    if (user.role !== UserRole.ADMIN && landDoc.userId !== user.id) {
-      throw new ForbiddenException('You do not have permission to access this document');
+    if (user.role !== UserRole.ADMIN && String(landDoc.userId) !== String(user.id)) {
+      throw new ForbiddenException('You do not have permission to access this document. Please contact the administrator.');
     }
 
     return landDoc;

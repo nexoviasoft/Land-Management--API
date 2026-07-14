@@ -13,8 +13,8 @@ export class NoticeService {
   ) {}
 
   async createNotice(title: string, content: string): Promise<Notice> {
-    // Deactivate all existing notices
-    await this.noticeRepository.update({}, { isActive: false });
+    // Deactivate all existing active notices
+    await this.noticeRepository.update({ isActive: true }, { isActive: false });
     
     // Create and save new active notice
     const notice = this.noticeRepository.create({ title, content, isActive: true });
