@@ -100,4 +100,15 @@ export class LanddocController {
       message: 'Land document deleted successfully',
     };
   }
+
+  @Patch(':id/approve')
+  @HttpCode(HttpStatus.OK)
+  async approve(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
+    const data = await this.landdocService.approve(id, req.user);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Land document approved successfully',
+      data,
+    };
+  }
 }

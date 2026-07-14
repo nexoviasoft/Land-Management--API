@@ -3,8 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateLanddocDto } from './dto/create-landdoc.dto';
 import { UpdateLanddocDto } from './dto/update-landdoc.dto';
-import { LandDoc } from './entities/landdoc.entity';
+import { LandDoc, LandDocStatus } from './entities/landdoc.entity';
 import { UserRole } from '../users/entities/user.entity';
+import { NotificationsService } from '../notifications/notifications.service';
 
 export interface UserPayload {
   id: string;
@@ -25,14 +26,22 @@ export class LanddocService {
   constructor(
     @InjectRepository(LandDoc)
     private readonly landDocRepository: Repository<LandDoc>,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async create(createLanddocDto: CreateLanddocDto, user: UserPayload): Promise<LandDoc> {
     const landDoc = this.landDocRepository.create({
       ...createLanddocDto,
       userId: user.id, // enforce that the creator is the authenticated user
+      status: LandDocStatus.PENDING,
     });
-    return await this.landDocRepository.save(landDoc);
+    const savedDoc = await this.landDocRepository.save(landDoc);
+    
+    await this.notificationsService.createForAdmins(
+      `A new land document has been uploaded for ${savedDoc.location?.mouza || 'unknown area'} and is pending approval.`
+    );
+    
+    return savedDoc;
   }
 
   async findAll(user: UserPayload, query: FindAllLanddocsQuery = {}) {
@@ -99,5 +108,22 @@ export class LanddocService {
   async remove(id: string, user: UserPayload): Promise<void> {
     const landDoc = await this.findOne(id, user);
     await this.landDocRepository.remove(landDoc);
+  }
+
+  async approve(id: string, user: UserPayload): Promise<LandDoc> {
+    if (user.role !== UserRole.ADMIN) {
+      throw new ForbiddenException('Only admins can approve land documents');
+    }
+
+    const landDoc = await this.findOne(id, user);
+    landDoc.status = LandDocStatus.APPROVED;
+    const savedDoc = await this.landDocRepository.save(landDoc);
+
+    await this.notificationsService.createForUser(
+      savedDoc.userId,
+      `Your land document for ${savedDoc.location?.mouza || 'unknown area'} has been approved.`
+    );
+
+    return savedDoc;
   }
 }

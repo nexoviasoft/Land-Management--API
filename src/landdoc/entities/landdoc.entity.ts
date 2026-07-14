@@ -1,5 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
+export enum LandDocStatus {
+    PENDING = 'pending',
+    APPROVED = 'approved',
+    REJECTED = 'rejected'
+}
+
 @Entity('land_docs')
 export class LandDoc {
     @PrimaryGeneratedColumn()
@@ -33,4 +39,11 @@ export class LandDoc {
 
     @CreateDateColumn({ type: 'timestamp', name: 'uploaded_at' })
     uploadedAt: Date;
+
+    @Column({
+        type: 'enum',
+        enum: LandDocStatus,
+        default: LandDocStatus.PENDING
+    })
+    status: LandDocStatus;
 }
