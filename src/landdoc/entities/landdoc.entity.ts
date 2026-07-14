@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 export enum LandDocStatus {
     PENDING = 'pending',
@@ -10,6 +10,12 @@ export enum LandDocStatus {
 export class LandDoc {
     @PrimaryGeneratedColumn()
     id: string;
+
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: Date;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updatedAt: Date;
 
     @Column({ name: 'user_id' })
     userId: string;
